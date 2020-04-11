@@ -5,7 +5,6 @@ const EMAIL_PASS = process.env.EMAIL_PASS
 
 var mailSender = function(senderEmail, subject,body)
 {
-    console.log("Mail Sender", EMAIL_PASS)
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {

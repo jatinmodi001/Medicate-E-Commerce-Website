@@ -55,13 +55,12 @@ router.post('/login',function(req,res){
 
 
 
-router.post('/resendotp',async (req,res)=>
+router.post('/resendotp',(req,res)=>
 {
-	console.log('Sending Email');
 	const secret = otplib.authenticator.generateSecret();
     const token = otplib.authenticator.generate(secret);
 
-    await mailSender(req.body.email,'Verify your Medicate Account','Here is your OTP : '+token)
+    mailSender(req.body.email,'Verify your Medicate Account','Here is your OTP : '+token)
 
     OtpModel.find({email : req.body.email},function(err,docs){
         if(err)
@@ -71,7 +70,7 @@ router.post('/resendotp',async (req,res)=>
         if(docs.length)
         {
             OtpModel.update({email:req.body.email},{$set:{token:token}})
-            .then(()=>{res.json('Mail Sent')})
+            .then(()=>{res.json('OK')})
             .catch(err=>res.sendStatus(500));
         }
         else
@@ -81,7 +80,7 @@ router.post('/resendotp',async (req,res)=>
             usertoken.token = token;
             usertoken.save()
             .then(()=>{
-                res.json('Mail Sent')
+                res.json('OK')
             })
             .catch(err=>{
                 console.log(err);
